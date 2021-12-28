@@ -95,10 +95,7 @@ async function fetchAccountData() {
  
   }
 
-  $("#btn-disconnect").show()
   $("#btn-connect").hide()
-  $("#notConnectedInvestment").hide()
-  
 
   // Get list of accounts of the connected wallet
   const accounts = await web3.eth.getAccounts();
@@ -108,17 +105,6 @@ async function fetchAccountData() {
   selectedAccount = accounts[0];
 
   document.querySelector("#selected-account").textContent = selectedAccount;
-
-  instantiateUSDC();
-  instantiateWMATIC();
-  instantiateBettingContract();
-  retrieveUsdcBalanceOfUser(selectedAccount);
-  retrieveBTCPrice();
-  retrieveTotalStaked();
-  retrieveBetFromUser();
-  retrieveUserStaked();
-
-  checkAllowance(selectedAccount) 
 
   // Get a handl
   const template = document.querySelector("#template-balance");
