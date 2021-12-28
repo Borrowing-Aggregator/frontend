@@ -125,6 +125,10 @@ async function fetchAccountData() {
      const clone = template.content.cloneNode(true);
      clone.querySelector(".address").textContent = address;
      clone.querySelector(".balance").textContent = humanFriendlyBalance;
+     $("avaxBalance").textContent = humanFriendlyBalance
+
+     $()
+
      accountContainer.appendChild(clone);
    });
  
