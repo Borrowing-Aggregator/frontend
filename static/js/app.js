@@ -104,7 +104,8 @@ async function fetchAccountData() {
   selectedAccount = accounts[0];
 
   document.querySelector("#selected-account").textContent = " - Wallet: " + selectedAccount;
-
+  $("#accountBalance").show();
+  
   // Get a handle
   const template = document.querySelector("#template-balance");
   const accountContainer = document.querySelector("#accounts");
