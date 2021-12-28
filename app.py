@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, make_response
-application = Flask(__name__)
+app = Flask(__name__)
 
-@application.route('/', methods=['GET'])
+@app.route('/', methods=['GET'])
 def main():
     resp = make_response(render_template('index.html'))
     return resp
@@ -10,5 +10,5 @@ def main():
 if __name__ == "__main__":
     # Setting debug to True enables debug output. This line should be
     # removed before deploying a production application.
-    application.debug = True
-    application.run()
+    app.debug = True
+    app.run()
