@@ -105,32 +105,7 @@ async function fetchAccountData() {
 
   document.querySelector("#selected-account").textContent = " - Wallet: " + selectedAccount;
   $("#accountBalance").show();
-  
-  // Get a handle
-  const template = document.querySelector("#template-balance");
-  const accountContainer = document.querySelector("#accounts");
 
-  // Purge UI elements any previously loaded accounts
-  accountContainer.innerHTML = '';
-
-  // Go through all accounts and get their ETH balance
-  const rowResolvers = accounts.map(async (address) => {
-    const balance = await web3.eth.getBalance(address);
-    // ethBalance is a BigNumber instance
-    // https://github.com/indutny/bn.js/
-    const ethBalance = web3.utils.fromWei(balance, "ether");
-    const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
-    // Fill in the templated row and put in the document
-    const clone = template.content.cloneNode(true);
-    clone.querySelector(".address").textContent = address;
-    clone.querySelector(".balance").textContent = humanFriendlyBalance;
-    accountContainer.appendChild(clone);
-  });
-
-  // Because rendering account does its own RPC commucation
-  // with Ethereum node, we do not want to display any results
-  // until data for all accounts is loaded
-  await Promise.all(rowResolvers);
 
   // Display fully loaded UI for wallet data
   document.querySelector("#connected").style.display = "block";
