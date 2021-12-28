@@ -91,8 +91,7 @@ async function fetchAccountData() {
   // Load chain information over an HTTP API
   if (chainId != 31337) { 
     const chainData = evmChains.getChain(chainId);
-    document.querySelector("#network-name").textContent = " - Network: " + chainData.name;
- 
+    document.querySelector("#network-name").textContent = "Network: " + chainData.name;
   }
 
   $("#btn-connect").hide()
@@ -104,9 +103,9 @@ async function fetchAccountData() {
   console.log("Got accounts", accounts);
   selectedAccount = accounts[0];
 
-  document.querySelector("#selected-account").textContent = selectedAccount;
+  document.querySelector("#selected-account").textContent = " - Wallet: " + selectedAccount;
 
-  // Get a handl
+  // Get a handle
   const template = document.querySelector("#template-balance");
   const accountContainer = document.querySelector("#accounts");
 
