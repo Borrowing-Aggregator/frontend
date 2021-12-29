@@ -107,7 +107,7 @@ async function fetchAccountData() {
   $("#accountBalance").show();
 
 
-   // Get a handl
+   // Get a handle
    const template = document.querySelector("#template-balance");
    const accountContainer = document.querySelector("#accounts");
  
