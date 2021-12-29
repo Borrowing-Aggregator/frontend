@@ -45,6 +45,9 @@ function init() {
   // Built-in web browser provider (only one can exist as a time)
   // like MetaMask, Brave or Opera is added automatically by Web3modal
   const providerOptions = {
+    rpc: {
+      43114: "https://api.avax.network/ext/bc/C/rpc"
+    }, 
     walletconnect: {
       package: WalletConnectProvider,
       options: {
