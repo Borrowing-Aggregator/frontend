@@ -139,7 +139,7 @@ async function fetchAccountData() {
 
 
   // Display fully loaded UI for wallet data
-  document.querySelector("#connected").style.display = "block";
+  //document.querySelector("#connected").style.display = "block";
 }
 
 
@@ -155,7 +155,7 @@ async function refreshAccountData() {
   // If any current data is displayed when
   // the user is switching acounts in the wallet
   // immediate hide this data
-  document.querySelector("#connected").style.display = "none";
+  // document.querySelector("#connected").style.display = "none";
 
   // Disable button while UI is loading.
   // fetchAccountData() will take a while as it communicates
@@ -221,7 +221,7 @@ async function onDisconnect() {
   selectedAccount = null;
 
   // Set the UI back to the initial state
-  document.querySelector("#connected").style.display = "none";
+  // document.querySelector("#connected").style.display = "none";
 
   //$("#btn-disconnect").hide()
   $("#btn-connect").show()
