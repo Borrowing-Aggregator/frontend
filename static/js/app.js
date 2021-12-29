@@ -91,10 +91,13 @@ async function fetchAccountData() {
   // Get connected chain id from Ethereum node
   const chainId = await web3.eth.getChainId();
   console.log(chainId);
+
+  var chainData;
+
   // Load chain information over an HTTP API
   if (chainId != 31337) { 
     try {
-    const chainData = evmChains.getChain(chainId);
+    chainData = evmChains.getChain(chainId);
     } catch (e) {
         console.log(e);
         if (chainId == 43114) {
