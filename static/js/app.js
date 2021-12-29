@@ -94,7 +94,8 @@ async function fetchAccountData() {
     document.querySelector("#network-name").textContent = "Network: " + chainData.name;
   }
 
-  $("#btn-connect").text("Connected")
+  $("#inside-btn-connect").text("Connected")
+  $("#inside-btn-connect").prop("disabled",true);
 
   // Get list of accounts of the connected wallet
   const accounts = await web3.eth.getAccounts();
@@ -115,7 +116,7 @@ async function fetchAccountData() {
      const ethBalance = web3.utils.fromWei(balance, "ether");
      const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
      // Fill in the templated row and put in the document
-     $("#avaxBalance").textContent = humanFriendlyBalance
+     $("#avaxBalance").text(humanFriendlyBalance)
 
      $()
 
