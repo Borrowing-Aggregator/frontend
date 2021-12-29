@@ -93,7 +93,16 @@ async function fetchAccountData() {
   console.log(chainId);
   // Load chain information over an HTTP API
   if (chainId != 31337) { 
+    try {
     const chainData = evmChains.getChain(chainId);
+    } catch (e) {
+        console.log(e);
+        if (chainId == 43114) {
+          chainData = {
+            "name": "Avalanche"
+          }
+        }
+    }
     document.querySelector("#network-name").textContent = "Network: " + chainData.name;
   }
 
