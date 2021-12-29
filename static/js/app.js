@@ -107,12 +107,6 @@ async function fetchAccountData() {
   $("#accountBalance").show();
 
 
-   // Get a handle
-   const accountContainer = document.querySelector("#accounts");
- 
-   // Purge UI elements any previously loaded accounts
-   accountContainer.innerHTML = '';
- 
    // Go through all accounts and get their ETH balance
    const rowResolvers = accounts.map(async (address) => {
      const balance = await web3.eth.getBalance(address);
@@ -125,7 +119,6 @@ async function fetchAccountData() {
 
      $()
 
-     accountContainer.appendChild(clone);
    });
  
    // Because rendering account does its own RPC commucation
