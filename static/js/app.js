@@ -108,7 +108,6 @@ async function fetchAccountData() {
 
 
    // Get a handle
-   const template = document.querySelector("#template-balance");
    const accountContainer = document.querySelector("#accounts");
  
    // Purge UI elements any previously loaded accounts
@@ -122,9 +121,6 @@ async function fetchAccountData() {
      const ethBalance = web3.utils.fromWei(balance, "ether");
      const humanFriendlyBalance = parseFloat(ethBalance).toFixed(4);
      // Fill in the templated row and put in the document
-     const clone = template.content.cloneNode(true);
-     clone.querySelector(".address").textContent = address;
-     clone.querySelector(".balance").textContent = humanFriendlyBalance;
      $("avaxBalance").textContent = humanFriendlyBalance
 
      $()
