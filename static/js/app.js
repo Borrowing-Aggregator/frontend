@@ -104,6 +104,10 @@ async function fetchAccountData() {
           chainData = {
             "name": "Avalanche"
           }
+        } else if (chainId == 43113) {
+          chainData = {
+            "name": "Avalanche Fuji"
+          }
         }
     }
     document.querySelector("#network-name").textContent = "Network: " + chainData.name;
@@ -121,6 +125,8 @@ async function fetchAccountData() {
 
   document.querySelector("#selected-account").textContent = " - Wallet: " + selectedAccount;
   $("#accountBalance").show();
+  instantiateMainContract();
+  getApr();
 
 
    // Go through all accounts and get their ETH balance
@@ -248,138 +254,30 @@ function connectWallet() {
 }
 
 
-var usdcContract;
-var WMaticContract;
-var mainBettingContract;
-var mainBettingContract_address = "0x32a1ECc07cCdb28802EBfb2172779c09a36755c2";
+var mainContract; 
 
-
-function instantiateUSDC() {
-  var usdc_contract_address = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"; //"0x2791bca1f2de4661ed88a30c99a7a9449aa84174";
-  usdcContract = new myWeb3.eth.Contract(usdcABI, usdc_contract_address);
-}
-
-function instantiateWMATIC() {
-  var matic_contract_address = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889";
-  WMaticContract = new myWeb3.eth.Contract(usdcABI, matic_contract_address);
+function instantiateMainContract() {
+  var main_contract_address = "0xd772f2c2495DEf0bD3d5d251dE6d0a8bbebff3a3";
+  mainContract = new myWeb3.eth.Contract(mainABI, main_contract_address);
 }
 
 
+function getApr() {
+  mainContract.methods.aaveAPR().call().then(function(result) {
+    console.log("AAVE APR: " + JSON.stringify(result));
+    var depositAPR = result[0]/10000
+    var incentiveDepositAPRPercent = result[1]/10000
+    var variableBorrowAPR = result[2]/10000
+    var incentiveBorrowAPRPercent = result[3]/10000
+    var stableBorrowAPR = result[4]/10000
+    console.log(depositAPR)
 
-function instantiateBettingContract() {
-  mainBettingContract = new myWeb3.eth.Contract(mainBettingABI, mainBettingContract_address);
-}
-
-function instantiateBeefy() {
-  var usdc_contract_address = "";
-  usdcContract = new myWeb3.eth.Contract(usdcABI, usdcContract);
-}
+    $("#AAVEdepAPR").text(depositAPR)
+    $("#AAVEincentiveDepositAPRPercent").text(incentiveDepositAPRPercent)
+    $("#AAVEvariableBorrowAPR").text(variableBorrowAPR)
+    $("#AAVEincentiveBorrowAPRPercent").text(incentiveBorrowAPRPercent)
+    $("#AAVEstableBorrowAPR").text(stableBorrowAPR)
 
 
-function retrieveUsdcBalanceOfUser(address) {
-  usdcContract.methods.balanceOf(address).call().then(function(result) {
-    console.log("USDC balance is: " + JSON.stringify(result));
-    var usdcBalance = 0;
-    var balanceRetrieved = parseInt(result);
-    if (balanceRetrieved > 0) {
-      usdcBalance = balanceRetrieved/10**18
-    }
-    $("#USDCBalance").text(usdcBalance.toFixed(2))
   });
 }
-
-
-function checkAllowance(address) {
-  usdcContract.methods.allowance(address, mainBettingContract_address).call().then(function(result) {
-    console.log("Checking allowance is: " + JSON.stringify(result));
-    var allowanceRetrieved = parseInt(result);
-    if (allowanceRetrieved > 0) {
-    $("#approveButton").hide()
-    $("#depositButton").show()
-    }
-  });
-}
-
-function approveToken() {
-  usdcContract.methods.approve(mainBettingContract_address, myWeb3.utils.toWei('1000000')).send({from:selectedAccount}).on("receipt", (function(result) {
-    console.log("Approval is: " + JSON.stringify(result));
-     })
-    ).on("error", function(error) { console.log(error) })
-    $("#approveButton").hide()
-    $("#depositButton").show()
-}
-
-
-
-function approveWMATIC() {
-  WMaticContract.methods.approve(mainBettingContract_address, myWeb3.utils.toWei('1000000')).send({from:selectedAccount}).on("receipt", (function(result) {
-    console.log("Approval is: " + JSON.stringify(result));
-     })
-    ).on("error", function(error) { console.log(error) })
-    $("#approveButton").hide()
-    $("#depositButton").show()
-}
-
-function retrieveBTCPrice() {
-  mainBettingContract.methods.getLatestPrice().call().then(function(result) {
-    console.log("BTC price is: " + JSON.stringify(result));
-    var priceRetrieved = parseInt(result);
-    priceRetrieved = priceRetrieved / 10**8.
-    $("#BTCPrice").text(priceRetrieved + " USD")
-  });
-}
-
-function retrieveTotalStaked() {
-  mainBettingContract.methods.getTotalStaked().call().then(function(result) {
-    console.log("Total Stake is: " + JSON.stringify(result));
-    var stakeRetrieved = parseInt(result)/10**18 + 1000000 // fake amount if 1M was staked;
-    $("#totalValueLocked").text(stakeRetrieved.toFixed(2))
-    var possibleReward = stakeRetrieved*0.15/365;
-    $("#totalReward").text(possibleReward.toFixed(2));
-  });
-}
-
-function retrieveUserStaked() {
-  mainBettingContract.methods.stakingBalance(selectedAccount).call().then(function(result) {
-    console.log("User Stake is: " + JSON.stringify(result));
-    var stakeRetrieved = parseInt(result)/10**18;
-    $("#userStake").text(stakeRetrieved.toFixed(2));
-  });
-}
-
-
-function stake() {
-  var valueStaked = myWeb3.utils.toWei($("#valueStaked").val())
-  console.log(valueStaked);
-  console.log(selectedAccount);
-  mainBettingContract.methods.stake(valueStaked).send({ from: selectedAccount }).on("receipt", (function(result) {
-    console.log("Value staked response is: " + JSON.stringify(result));
-    retrieveUserStaked();
-    retrieveTotalStaked();
-    retrieveUsdcBalanceOfUser(selectedAccount); 
-    })
-  ).on("error", function(error) { console.log(error) })
-
-}
-
-function makeABetCall() {
-  var valueStaked = $("#betValue").val()
-  console.log(valueStaked);
-  mainBettingContract.methods.makeABet(valueStaked).send({ from: selectedAccount }).on("receipt", (function(result) {
-    console.log("Make a bet value response is: " + JSON.stringify(result));
-    retrieveBetFromUser();
-   })
-  ).on("error", function(error) { console.log(error) })
-}
-
-
-function retrieveBetFromUser() {
-  mainBettingContract.methods.getBetFromAddress(selectedAccount).call().then(function(result) {
-    for(var i =0; i < result.length; i++) {
-        console.log("Bet value response is: " + result[i]);
-        $("#bets").append("<td>"  +  result[i]  + "</td>")
-    }
-  })
-}
-
-
