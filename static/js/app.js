@@ -126,6 +126,7 @@ async function fetchAccountData() {
   document.querySelector("#selected-account").textContent = " - Wallet: " + selectedAccount;
   $("#accountBalance").show();
   instantiateMainContract();
+  getApr();
 
 
    // Go through all accounts and get their ETH balance
@@ -272,10 +273,10 @@ function getApr() {
     console.log(depositAPR)
 
     $("#AAVEdepAPR").text(depositAPR)
-    $("#AAVEincentiveDepositAPRPercent").text(depositAPR)
-    $("#AAVEvariableBorrowAPR").text(depositAPR)
-    $("#AAVEincentiveBorrowAPRPercent").text(depositAPR)
-    $("#AAVEstableBorrowAPR").text(depositAPR)
+    $("#AAVEincentiveDepositAPRPercent").text(incentiveDepositAPRPercent)
+    $("#AAVEvariableBorrowAPR").text(variableBorrowAPR)
+    $("#AAVEincentiveBorrowAPRPercent").text(incentiveBorrowAPRPercent)
+    $("#AAVEstableBorrowAPR").text(stableBorrowAPR)
 
 
   });
