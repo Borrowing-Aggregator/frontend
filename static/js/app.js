@@ -104,6 +104,10 @@ async function fetchAccountData() {
           chainData = {
             "name": "Avalanche"
           }
+        } else if (chainId == 43113) {
+          chainData = {
+            "name": "Avalanche Fuji"
+          }
         }
     }
     document.querySelector("#network-name").textContent = "Network: " + chainData.name;
