@@ -261,16 +261,22 @@ function instantiateMainContract() {
 }
 
 
-
 function getApr() {
   mainContract.methods.aaveAPR().call().then(function(result) {
     console.log("AAVE APR: " + JSON.stringify(result));
-    
-    
-    depositAPR, incentiveDepositAPRPercent, variableBorrowAPR, incentiveBorrowAPRPercent, stableBorrowAPR = result
+    var depositAPR = result[0]/10000
+    var incentiveDepositAPRPercent = result[1]/10000
+    var variableBorrowAPR = result[2]/10000
+    var incentiveBorrowAPRPercent = result[3]/10000
+    var stableBorrowAPR = result[4]/10000
+    console.log(depositAPR)
+
     $("#AAVEdepAPR").text(depositAPR)
+    $("#AAVEincentiveDepositAPRPercent").text(depositAPR)
+    $("#AAVEvariableBorrowAPR").text(depositAPR)
+    $("#AAVEincentiveBorrowAPRPercent").text(depositAPR)
+    $("#AAVEstableBorrowAPR").text(depositAPR)
 
 
   });
 }
-
