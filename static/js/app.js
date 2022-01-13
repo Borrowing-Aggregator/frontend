@@ -192,7 +192,7 @@ async function onConnect() {
   }
 
   // Subscribe to accounts change
-  provider.on("accountsChanged", (accounts) => {
+provider.on("accountsChanged", (accounts) => {
       
     fetchAccountData();
   });
@@ -278,6 +278,21 @@ function getApr() {
     $("#AAVEincentiveBorrowAPRPercent").text(incentiveBorrowAPRPercent)
     $("#AAVEstableBorrowAPR").text(stableBorrowAPR)
 
+    var arrayAPY = APRtoAPY(depositAPR, variableBorrowAPR, stableBorrowAPR)
+    console.log(arrayAPY[0])
+    console.log(arrayAPY[1])
+    console.log(arrayAPY[2])
 
   });
+}
+
+function APRtoAPY(depositAPR, variableBorrowAPR, stableBorrowAPR) {
+  const SECONDS_PER_YEAR = 31536000;
+
+  // APR to APY
+  const depositAPY = ((1 + (depositAPR / SECONDS_PER_YEAR)) * SECONDS_PER_YEAR) - 1;
+  const variableBorrowAPY = ((1 + (variableBorrowAPR / SECONDS_PER_YEAR)) * SECONDS_PER_YEAR) - 1;
+  const stableBorrowAPY = ((1 + (stableBorrowAPR / SECONDS_PER_YEAR)) ** SECONDS_PER_YEAR) - 1;
+
+  return {depositAPY, variableBorrowAPY, stableBorrowAPY};
 }
